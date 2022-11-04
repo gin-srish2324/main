@@ -310,4 +310,4 @@ data$age
 4. Create a function that takes a two numeric values and calculates their average. If the average is greater than the first number, print "Fighting Illini!"
 
 
-
+print("I love analytics")
