@@ -1,0 +1,313 @@
+---
+title: "Intro to R"
+author: "Unnati Narang"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+The purpose of this in-class demo is to familiarize you with R, RStudio and R Markdown.
+
+### Basics to know about R
+
+#### Installing R
+
+R: To use R, navigate your browser to https://cran.r-project.org/. Download. You’re ready to use.
+
+RStudio: Most R users interact with R through an (amazing) IDE called “RStudio”. Navigate to https://www.rstudio.com/products/rstudio/ and download the desktop IDE. Now you’re really ready.
+
+1. R is free: R is an open source language so you don't need to pay for it.
+
+2. R is an object oriented language and its objects have types. What this means is you can create multiple objects and hold them in memory, e.g., multiple datasets. 
+
+You have to NAME objects and you can assign stuff to each object. 
+
+* a <- 3" (i.e. the object a has been assigned as a scalar — or single-length vector — equal to 3).
+* b <- matrix(1:4, nrow = 2) (i.e. the object b has been assigned as a 2x2 matrix)
+
+Side note: the <- assignment operator is read aloud as “gets”. You can also use a regular  equal sign if you prefer, e.g. a = 3.
+ 
+### R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. To see the output, you can either run the R code line by line in the console, or change "r, eval=FALSE" to "r, eval = TRUE" in the .Rmd file in R for the R code block you want to run and view the output for. 
+
+### Basic R Syntax, data types and objects
+
+#### Data types
+##### Numeric
+```{r, eval=FALSE}
+# eval = FALSE can be changed to eval = TRUE if you want the output to be displayed
+# Enter a number, evaluate its class
+1
+class(1)
+
+# Arithmetic Operators
+#   +   addition
+#   -   subtraction
+#   *   multiplication
+#   /   division
+#   ^   exponentiation
+2+2
+2^2
+2-2
+```
+
+##### Character
+```{r, eval=FALSE}
+# Enter a character in quotes, evaluate its class
+"Analytics"
+class("Analytics")
+
+```
+
+##### Logical
+```{r, eval=FALSE}
+# Enter a logical value, evaluate its class
+TRUE
+FALSE
+class(TRUE)
+
+1<2
+
+# Logical operators
+#   &   for logical AND
+#   |   for logical OR
+#   !   for logical negation (NOT)
+TRUE | FALSE
+TRUE & FALSE
+!TRUE
+
+# Relational operators: 
+#   <   for Less than
+#   >   for Greater than
+#   <=  for Less than or equal to
+#   >=  for Greater than or equal to
+#   ==  for Equal to
+#   !=  for Not equal to
+3 > 9
+3 >= 9
+3 < 9
+3 <= 9
+3 == 9
+3 != 9
+"b" > "a"
+```
+
+
+##### Date-time
+```{r, eval=FALSE}
+# Get current time and date. Evaluate its class. The default format is yyyy-mm-dd
+
+Sys.Date()
+Sys.time()
+
+class(Sys.Date())
+class(Sys.time())
+
+class("2021-01-01")
+
+# to create a date, use as.Date
+as.Date("2021-01-01")
+class(as.Date("2021-01-01"))
+# to create a date-time, use as.POSIXct
+as.POSIXct("2021-01-01 04:20:00")
+
+# extract current month, year, and date from Sys.Date
+format(Sys.Date(), "%m")
+format(Sys.Date(), "%Y")
+format(Sys.Date(), "%d")
+
+# can convert to numeric class
+d <- format(Sys.Date(), "%d")
+class(d)
+d <- as.numeric(d)
+class(d)
+## Variable assignment
+```{r, eval=FALSE}
+# assign "hello world" to variable h
+x <- "welcome to stats with R"
+
+# autoprinting. you do not need the "print" function.
+x
+
+# delete variable
+rm(x)
+x
+```
+
+
+##### Vectors and lists
+```{r, eval=FALSE}
+# What do the `list()` and `c()` functions do? You can get help in R by typing a question mark. 
+?c
+
+# You can create a list of arbitrary values
+y <- list("stats with R", 3, 9, 5)
+class(y)
+y
+
+# Vectors are a list where all elements have the same type
+v <- c(3, 9, 5)
+class(v)
+v
+# Subsetting vectors
+
+# You can select elements in a given positions using positive integers
+v[1]
+
+# You can do this for more than one element using c, i.e., concatenate
+v[c(1, 3)]
+
+# Negative integers drops the elements in their position
+v[c(-1, -3)]
+
+# Logical vectors select elements with a corresponding value of TRUE
+v[c(TRUE, FALSE, FALSE)]
+
+```
+### Reading, writing and subsetting data
+
+
+#### Data Frames
+```{r, eval=FALSE}
+
+# CSV "Comma Separated Values" Format
+data <- read.csv("http://www.unnatinarang.com/uploads/1/0/9/8/109864012/data1.csv")
+
+class(data)
+
+# Compactly displays the data structure of the data object.
+str(data)
+
+# Viewing (browsing) data
+View(data)
+
+# Displays the names of variables contained in the dataObject.
+names(data)
+
+# Displays the vector defined by the variable name contained in the dataObject
+data[,3]
+data[,1:3]
+
+data$location
+data$"location"
+
+# table() and summary() summarize values
+table(data$test_result)
+summary(data$age)
+
+# Display the first few rows
+head(data)
+data[1:3,]
+
+# Display individuals testing negative
+data[data$test_result == "Negative", ]
+
+# Display individuals older than 21
+data[data$age > 21, ]
+
+# Display individuals older than 21 & negative
+data[data$age > 21 & data$test_result == "Negative", ]
+
+```
+
+### Installing packages and setting working directory
+```{r, eval = FALSE}
+# To read .xlsx file, we need to install the OPENXLSX package in the following way
+install.packages("openxlsx")
+library(openxlsx)
+data <- read.xlsx("http://www.unnatinarang.com/uploads/1/0/9/8/109864012/data1.xlsx")
+
+# You can also read data locally saved on your computer in 2 ways
+
+# set working directory to wherever the data are stored using # setwd("filepath/") . In my case, it is in a folder called "Data" on the Desktop. Then read the file
+# setwd("~/Desktop/Data")
+# data <- read.xlsx("data1.xlsx")
+
+# or give the data its file path and name directly in one line of code
+# data <- read.xlsx("~/Desktop/Data/data1.xlsx")
+
+# if you do not know the file path, simply save the data in the same folder as this .Rmd file. Then go to "Session --> Set Working Directory --> To Source File Location" to let R do this for you. What do you notice runs in the R console?
+```
+
+
+
+### Functions
+```{r, eval=FALSE}
+# Create function that adds two numbers
+multiply <- function(a, b) { 
+  a * b
+}
+
+# Invoke the function
+multiply(a = 3, b = 9)
+multiply(3, 9)
+multiply()
+
+# Without a and b, the function doens't work. Now redefine function with default values for arguments and try invoking it again.
+multiply <- function(a = 0, b = 0) { 
+  a + b
+}
+
+multiply()
+
+```
+### Conditionals and Loops (*advanced topic)
+
+#### Conditional statements (if, if/else)
+```{r, eval=FALSE}
+# If
+if (TRUE) {
+  print("Condition is TRUE!")
+}
+
+
+# If/Else
+if (TRUE) {
+  print("Condition is TRUE!")
+} else {
+  print("Condition is FALSE!")
+}
+
+```
+
+#### Loops (for)
+```{r, eval=FALSE}
+for (item in v) {
+  print(item)
+}
+
+# try printing all IDs
+for (item in data$Id) {
+  print(item)
+}
+
+for (item in 1:nrow(data)) {
+  print(data$Id[item])
+}
+
+
+```
+
+For additional resources, refer to https://github.com/grantmcdermott and https://tyleransom.github.io/econometricslabs.html.
+
+#### Your turn to try it!
+
+1. Insert an R code chunk below. (What does the shortcut Ctrl+Alt+I do?) 
+```{r}
+
+```
+
+
+2. Try printing all ages from the data.xlsx file you read earlier in R.
+data$age
+
+3. Define a variable called "Shows" as a list of 4 of your favorite TV shows. Print out the first show only.
+
+4. Create a function that takes a two numeric values and calculates their average. If the average is greater than the first number, print "Fighting Illini!"
+
+
+
